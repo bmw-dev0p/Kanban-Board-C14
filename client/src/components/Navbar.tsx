@@ -3,10 +3,10 @@ import { Link } from 'react-router-dom';
 import auth from '../utils/auth';
 
 const Navbar = () => {
-  const [ loginCheck, setLoginCheck ] = useState(false);
+  const [loginCheck, setLoginCheck] = useState(false);
 
   const checkLogin = () => {
-    if(auth.loggedIn()) {
+    if (auth.loggedIn()) {
       setLoginCheck(true);
     }
   };
@@ -22,21 +22,27 @@ const Navbar = () => {
         <Link to='/'>Krazy Kanban Board</Link>
       </div>
       <ul>
-      {
-        !loginCheck ? (
-          <li className='nav-item'>
-            <button type='button' className='logButton'>
-              <Link to='/login'>Login</Link>
-            </button>
-          </li>
-        ) : (
-          <li className='nav-item'>
-            <button type='button' onClick={() => {
-              auth.logout();
-            }}>Logout</button>
-          </li>
-        )
-      }
+        {
+          !loginCheck ? (
+            <>
+              <li className='nav-item'>
+                <button type='button' className='logButton'>
+                  <Link to='/login' className='logLink'>Login</Link>
+                </button>
+              </li><li className='nav-item'>
+                <button type='button' className='logButton'>
+                  <Link to='/signup' className='logLink'>Sign Up</Link>
+                </button>
+              </li>
+            </>
+          ) : (
+            <li className='nav-item'>
+              <button type='button' className='logButton'onClick={() => {
+                auth.logout();
+              }}><span className='hoverFix'>Logout</span></button>
+            </li>
+          )
+        }
       </ul>
     </div>
   )
