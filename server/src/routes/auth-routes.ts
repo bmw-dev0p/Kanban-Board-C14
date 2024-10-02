@@ -32,9 +32,27 @@ export const login = async (req: Request, res: Response) => {
   return res.json({ token });  // Send the token as a JSON response
 };
 
+//sign up authorization
+export const signUp = async (req: Request, res: Response) => {
+  try {
+    const { username, password } = req.body;
+    const newUser = await User.create({ username, password });
+    console.log(newUser);
+    
+    const secretKey = process.env.JWT_SECRET_KEY || '';
+    const token = jwt.sign({ username }, secretKey, { expiresIn: '1h' });
+    return res.json({ token });
+  } catch (err) {
+    return res.status(500).json({ message: 'Failed to sign up' });
+  }
+};
+
 const router = Router();
 
 // POST /login - Login a user
 router.post('/login', login);
+
+// POST /signup - Sign up a user
+router.post('/signup', signUp);
 
 export default router;
